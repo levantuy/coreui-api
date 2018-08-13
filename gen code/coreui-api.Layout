@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<CslaGeneratorUnitLayout xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectListFilterText />
+  <ProjectListFilterType>&lt;All&gt;</ProjectListFilterType>
+  <ProjectListSortMode>None</ProjectListSortMode>
+  <ProjectListSelectedObjects>
+    <string>UserColl</string>
+    <string>UserInfo</string>
+  </ProjectListSelectedObjects>
+  <ObjectCollapsedCategories />
+  <ObjectPropertySort>Categorized</ObjectPropertySort>
+  <ObjectSelectedGridItem>Output Folder</ObjectSelectedGridItem>
+  <SchemaExpandedTrees>
+    <string>Tables</string>
+  </SchemaExpandedTrees>
+  <SchemaSelectedTree>Tables</SchemaSelectedTree>
+  <SchemaExpandedNodes />
+  <SchemaSelectedNode>dbo.adm_users</SchemaSelectedNode>
+  <SchemaSelectedSprocSubNode />
+  <ActiveDocument />
+  <RelationsBuilderTab>AllObjectsTab</RelationsBuilderTab>
+  <RelationsBuilderSelectedObject />
+  <RelationsBuilderCollapsedCategories />
+  <RelationsBuilderPropertySort>Categorized</RelationsBuilderPropertySort>
+  <RelationsBuilderSelectedGridItem />
+  <ProjectPropertiesMainTab>CreationTab</ProjectPropertiesMainTab>
+  <ProjectPropertiesSubTab>DefaultsGeneralTab</ProjectPropertiesSubTab>
+  <LayoutFileVersion>1.0</LayoutFileVersion>
+</CslaGeneratorUnitLayout>
