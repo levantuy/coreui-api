@@ -25,17 +25,15 @@ namespace CoreuiApi
             ModelBinders.Binders.DefaultBinder = new Csla.Web.Mvc.CslaModelBinder();
         }
 
-        protected void Application_AuthenticateRequest(Object sender, EventArgs e)
-        {
-            if (Csla.ApplicationContext.User != null && Csla.ApplicationContext.User.Identity.IsAuthenticated && Csla.ApplicationContext.User.Identity is FormsIdentity)
-            {
-                //FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(Request.Cookies.Get(FormsAuthentication.FormsCookieName).Value);
-                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(MemoryCacher.GetValue(Csla.ApplicationContext.User.Identity.Name).ToString());
-                FormsIdentity id = new FormsIdentity(ticket);
-                var principal = new CoreuiApi.Security.Principal(id.Name, id.Ticket.UserData);
-                Csla.ApplicationContext.User = principal;
-            }
-        }
+        //protected void Application_BeginRequest(object sender, EventArgs e)
+        //{
+            
+        //}
+
+        //protected void Application_AuthenticateRequest(Object sender, EventArgs e)
+        //{
+           
+        //}
 
         protected void Application_EndRequest(object sender, EventArgs eventArgs)
         {

@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using CoreuiApi.Security;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Security;
 
 namespace CoreuiApi.Filters
 {
@@ -22,7 +24,18 @@ namespace CoreuiApi.Filters
 
         public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await InnerResult.ExecuteAsync(cancellationToken);
+            if (Csla.ApplicationContext.User != null && Csla.ApplicationContext.User.Identity.IsAuthenticated)
+            {
+                var cache = MemoryCacher.GetValue(Csla.ApplicationContext.User.Identity.Name);
+                if(cache.IsSuccess)
+                {
+                    FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cache.Respone.ToString());
+                    FormsIdentity id = new FormsIdentity(ticket);
+                    Csla.ApplicationContext.User = new CoreuiApi.Security.Principal(id.Name, id.Ticket.UserData);
+                }                
+            }
+
+            HttpResponseMessage response = await InnerResult.ExecuteAsync(cancellationToken); 
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -30,8 +43,9 @@ namespace CoreuiApi.Filters
                 if (response.Headers.WwwAuthenticate.All(h => h.Scheme != Challenge.Scheme))
                 {
                     response.Headers.WwwAuthenticate.Add(Challenge);
+                    response.Content = new StringContent("{\"StatusCode\":401, \"error\":\"Token không hợp lệ\"}", System.Text.Encoding.UTF8, "application/json");
                 }
-            }
+            } 
 
             return response;
         }

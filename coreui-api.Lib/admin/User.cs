@@ -7,6 +7,7 @@
 using System;
 using Csla;
 using CoreuiApi.Dto;
+using System.Collections.Generic;
 
 namespace CoreuiApi.Lib
 {
@@ -163,43 +164,43 @@ namespace CoreuiApi.Lib
         /// <summary>
         /// Maintains metadata about <see cref="last_login_date"/> property.
         /// </summary>
-        private static readonly PropertyInfo<SmartDate> Last_login_dateProperty = RegisterProperty<SmartDate>(p => p.Last_login_date, "last_login_date");
+        private static readonly PropertyInfo<DateTime> Last_login_dateProperty = RegisterProperty<DateTime>(p => p.Last_login_date, "last_login_date");
         /// <summary>
         /// Gets or sets the last_login_date.
         /// </summary>
         /// <value>The last_login_date.</value>
-        public string Last_login_date
+        public DateTime Last_login_date
         {
-            get { return GetPropertyConvert<SmartDate, String>(Last_login_dateProperty); }
-            set { SetPropertyConvert<SmartDate, String>(Last_login_dateProperty, value); }
+            get { return GetProperty(Last_login_dateProperty); }
+            set { SetProperty(Last_login_dateProperty, value); }
         }
 
         /// <summary>
         /// Maintains metadata about <see cref="last_password_changed_date"/> property.
         /// </summary>
-        private static readonly PropertyInfo<SmartDate> Last_password_changed_dateProperty = RegisterProperty<SmartDate>(p => p.Last_password_changed_date, "last_password_changed_date");
+        private static readonly PropertyInfo<DateTime> Last_password_changed_dateProperty = RegisterProperty<DateTime>(p => p.Last_password_changed_date, "last_password_changed_date");
         /// <summary>
         /// Gets or sets the last_password_changed_date.
         /// </summary>
         /// <value>The last_password_changed_date.</value>
-        public string Last_password_changed_date
+        public DateTime Last_password_changed_date
         {
-            get { return GetPropertyConvert<SmartDate, String>(Last_password_changed_dateProperty); }
-            set { SetPropertyConvert<SmartDate, String>(Last_password_changed_dateProperty, value); }
+            get { return GetProperty(Last_password_changed_dateProperty); }
+            set { SetProperty(Last_password_changed_dateProperty, value); }
         }
 
         /// <summary>
         /// Maintains metadata about <see cref="last_lockout_date"/> property.
         /// </summary>
-        private static readonly PropertyInfo<SmartDate> Last_lockout_dateProperty = RegisterProperty<SmartDate>(p => p.Last_lockout_date, "last_lockout_date");
+        private static readonly PropertyInfo<DateTime> Last_lockout_dateProperty = RegisterProperty<DateTime>(p => p.Last_lockout_date, "last_lockout_date");
         /// <summary>
         /// Gets or sets the last_lockout_date.
         /// </summary>
         /// <value>The last_lockout_date.</value>
-        public string Last_lockout_date
+        public DateTime Last_lockout_date
         {
-            get { return GetPropertyConvert<SmartDate, String>(Last_lockout_dateProperty); }
-            set { SetPropertyConvert<SmartDate, String>(Last_lockout_dateProperty, value); }
+            get { return GetProperty(Last_lockout_dateProperty); }
+            set { SetProperty(Last_lockout_dateProperty, value); }
         }
 
         /// <summary>
@@ -219,15 +220,15 @@ namespace CoreuiApi.Lib
         /// <summary>
         /// Maintains metadata about <see cref="failed_password_attempt_window_start"/> property.
         /// </summary>
-        private static readonly PropertyInfo<SmartDate> Failed_password_attempt_window_startProperty = RegisterProperty<SmartDate>(p => p.Failed_password_attempt_window_start, "failed_password_attempt_window_start");
+        private static readonly PropertyInfo<DateTime> Failed_password_attempt_window_startProperty = RegisterProperty<DateTime>(p => p.Failed_password_attempt_window_start, "failed_password_attempt_window_start");
         /// <summary>
         /// Gets or sets the failed_password_attempt_window_start.
         /// </summary>
         /// <value>The failed_password_attempt_window_start.</value>
-        public string Failed_password_attempt_window_start
+        public DateTime Failed_password_attempt_window_start
         {
-            get { return GetPropertyConvert<SmartDate, String>(Failed_password_attempt_window_startProperty); }
-            set { SetPropertyConvert<SmartDate, String>(Failed_password_attempt_window_startProperty, value); }
+            get { return GetProperty(Failed_password_attempt_window_startProperty); }
+            set { SetProperty(Failed_password_attempt_window_startProperty, value); }
         }
 
         /// <summary>
@@ -247,29 +248,29 @@ namespace CoreuiApi.Lib
         /// <summary>
         /// Maintains metadata about <see cref="failed_password_answer_attempt_window_start"/> property.
         /// </summary>
-        private static readonly PropertyInfo<SmartDate> Failed_password_answer_attempt_window_startProperty = RegisterProperty<SmartDate>(p => p.Failed_password_answer_attempt_window_start, "failed_password_answer_attempt_window_start");
+        private static readonly PropertyInfo<DateTime> Failed_password_answer_attempt_window_startProperty = RegisterProperty<DateTime>(p => p.Failed_password_answer_attempt_window_start, "failed_password_answer_attempt_window_start");
         /// <summary>
         /// Gets or sets the failed_password_answer_attempt_window_start.
         /// </summary>
         /// <value>The failed_password_answer_attempt_window_start.</value>
-        public string Failed_password_answer_attempt_window_start
+        public DateTime Failed_password_answer_attempt_window_start
         {
-            get { return GetPropertyConvert<SmartDate, String>(Failed_password_answer_attempt_window_startProperty); }
-            set { SetPropertyConvert<SmartDate, String>(Failed_password_answer_attempt_window_startProperty, value); }
+            get { return GetProperty(Failed_password_answer_attempt_window_startProperty); }
+            set { SetProperty(Failed_password_answer_attempt_window_startProperty, value); }
         }
 
         /// <summary>
         /// Maintains metadata about <see cref="birthday"/> property.
         /// </summary>
-        private static readonly PropertyInfo<SmartDate> BirthdayProperty = RegisterProperty<SmartDate>(p => p.Birthday, "birthday");
+        private static readonly PropertyInfo<DateTime> BirthdayProperty = RegisterProperty<DateTime>(p => p.Birthday, "birthday");
         /// <summary>
         /// Gets or sets the birthday.
         /// </summary>
         /// <value>The birthday.</value>
-        public string Birthday
+        public DateTime Birthday
         {
-            get { return GetPropertyConvert<SmartDate, String>(BirthdayProperty); }
-            set { SetPropertyConvert<SmartDate, String>(BirthdayProperty, value); }
+            get { return GetProperty(BirthdayProperty); }
+            set { SetProperty(BirthdayProperty, value); }
         }
 
         /// <summary>
@@ -345,15 +346,15 @@ namespace CoreuiApi.Lib
         /// <summary>
         /// Maintains metadata about <see cref="last_modified"/> property.
         /// </summary>
-        private static readonly PropertyInfo<SmartDate> Last_modifiedProperty = RegisterProperty<SmartDate>(p => p.Last_modified, "last_modified");
+        private static readonly PropertyInfo<DateTime> Last_modifiedProperty = RegisterProperty<DateTime>(p => p.Last_modified, "last_modified");
         /// <summary>
         /// Gets or sets the last_modified.
         /// </summary>
         /// <value>The last_modified.</value>
-        public string Last_modified
+        public DateTime Last_modified
         {
-            get { return GetPropertyConvert<SmartDate, String>(Last_modifiedProperty); }
-            set { SetPropertyConvert<SmartDate, String>(Last_modifiedProperty, value); }
+            get { return GetProperty(Last_modifiedProperty); }
+            set { SetProperty(Last_modifiedProperty, value); }
         }
 
         /// <summary>
@@ -369,6 +370,8 @@ namespace CoreuiApi.Lib
             get { return GetProperty(Last_user_idProperty); }
             set { SetProperty(Last_user_idProperty, value); }
         }
+
+        public List<string> Roles { get; set; }
 
         #endregion
 

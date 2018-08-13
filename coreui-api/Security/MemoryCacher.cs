@@ -6,17 +6,25 @@ using System.Runtime.Caching;
 
 namespace CoreuiApi.Security
 {
+    public class CacheRespone
+    {
+        public bool IsSuccess { get; set; }
+        public object Respone { get; set; }
+    }
     public class MemoryCacher
     {
-        public static object GetValue(string key)
+        public static CacheRespone GetValue(string key)
         {
-            MemoryCache memoryCache = MemoryCache.Default;
-            return memoryCache.Get(key);
+            MemoryCache memoryCache = MemoryCache.Default;            
+            CacheRespone cacheRespone = new CacheRespone();            
+            if(memoryCache.Contains(key)) { cacheRespone.IsSuccess = true; cacheRespone.Respone = memoryCache.Get(key); }
+            else { cacheRespone.IsSuccess = false; }
+            return cacheRespone;
         }
 
         public static bool Add(string key, object value, DateTimeOffset absExpiration)
-        {
-            MemoryCache memoryCache = MemoryCache.Default;
+        {            
+            MemoryCache memoryCache = MemoryCache.Default;            
             return memoryCache.Add(key, value, absExpiration);
         }
 

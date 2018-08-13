@@ -17,36 +17,55 @@ namespace CoreuiApi.Controllers
     public class UserApiController : ApiController
     {
         [JwtAuthentication]
-        [System.Web.Mvc.HttpGet]
-        [Csla.Web.Mvc.HasPermission(Csla.Rules.AuthorizationActions.GetObject, typeof(UserColl))]
+        [System.Web.Http.HttpGet]        
+        [System.Web.Http.Route("api/v1/users")]
         public IHttpActionResult GetAll()
         {
-            var a = Csla.ApplicationContext.User.Identity;
-
-            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(MemoryCacher.GetValue(Csla.ApplicationContext.User.Identity.Name).ToString());
-            FormsIdentity id = new FormsIdentity(ticket);
-            var principal = new CoreuiApi.Security.Principal(id.Name, id.Ticket.UserData);
-            Csla.ApplicationContext.User = principal;
-
-            var user = new UserModel();                
-            var result = CoreuiApi.Lib.UserColl.GetUserColl();
-            var users = new List<UserModel>();
-            foreach(var item in result)
+            try
             {
-                users.Add(user.Map(item));
+                var user = new UserModel();
+                var result = CoreuiApi.Lib.UserColl.GetUserColl();
+                var users = new List<UserModel>();
+                foreach (var item in result)
+                {
+                    users.Add(user.Map(item));
+                }
+
+                int totalPage = users.Count();
+                return Ok(new
+                {
+                    users = users
+                });
             }
-
-            int totalPage = users.Count();
-            return Ok(new
+            catch(Exception ex)
             {
-                users = users
-            });
+                return Ok(new
+                {
+                    error = ex.Message,
+                    users = ""
+                });
+            }            
         }
 
         [JwtAuthentication]
-        [System.Web.Mvc.HttpGet]
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/v1/users/{id:long}")]
         public IHttpActionResult Users(long id)
         {
+            var user = new UserEditModel();
+            var result = CoreuiApi.Lib.User.GetUser(id);
+            user = user.Map(result);
+            return Ok(new
+            {
+                user = user
+            });
+        }
+
+        [JwtAuthentication]
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/v1/users")]
+        public IHttpActionResult Users(UserEditModel userModel)
+        {
             var user = new UserModel();
             var result = CoreuiApi.Lib.UserColl.GetUserColl();
             var users = new List<UserModel>();
@@ -63,8 +82,9 @@ namespace CoreuiApi.Controllers
         }
 
         [JwtAuthentication]
-        [System.Web.Mvc.HttpPost]
-        public IHttpActionResult Users(UserModel userModel)
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("api/v1/users/{id:long}")]
+        public IHttpActionResult UserEdit(UserEditModel userModel)
         {
             var user = new UserModel();
             var result = CoreuiApi.Lib.UserColl.GetUserColl();
@@ -79,6 +99,26 @@ namespace CoreuiApi.Controllers
             {
                 users = users
             });
-        }        
+        }
+
+        [JwtAuthentication]
+        [System.Web.Http.HttpDelete]
+        [System.Web.Http.Route("api/v1/users/{id:long}")]
+        public IHttpActionResult UserDelete(long id)
+        {
+            var user = new UserModel();
+            var result = CoreuiApi.Lib.UserColl.GetUserColl();
+            var users = new List<UserModel>();
+            foreach (var item in result)
+            {
+                users.Add(user.Map(item));
+            }
+
+            int totalPage = users.Count();
+            return Ok(new
+            {
+                users = users
+            });
+        }
     }
 }

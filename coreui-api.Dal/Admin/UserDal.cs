@@ -47,7 +47,7 @@ namespace CoreuiApi.Dal
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("Connection"))
             {
-                using (var cmd = new SqlCommand("dbo.User_Get", ctx.Connection))
+                using (var cmd = new SqlCommand("dbo.User_by_user_name", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@user_name", user_name).DbType = DbType.String;
