@@ -6,15 +6,18 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.Http;
 using CoreuiApi.Security;
+using CoreuiApi.Filters;
 
 namespace CoreuiApi.Controllers
 {
+    [System.Web.Http.RoutePrefix("api/v1/accounts")]
     [HandleError]
     public class AccountController : ApiController
     {     
         // POST: /Account/Login
         [System.Web.Http.HttpPost]
         [System.Web.Http.AllowAnonymous]
+        [System.Web.Http.Route("")]
         public IHttpActionResult Login(LoginViewModel model)
         {
             try
@@ -68,10 +71,14 @@ namespace CoreuiApi.Controllers
             }
         }
 
+        [JwtAuthentication]
         [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("")]
         public IHttpActionResult LogOff()
         {
-            FormsAuthentication.SignOut();
+            if (Csla.ApplicationContext.User != null)
+                MemoryCacher.Delete(Csla.ApplicationContext.User.Identity.Name);
+            FormsAuthentication.SignOut();            
             return Ok(new { success = true, message = "Đăng xuất thành công!" });
         }
     }

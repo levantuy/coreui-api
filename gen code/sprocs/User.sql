@@ -1,3 +1,21 @@
+IF EXISTS(SELECT 1 FROM sys.procedures AS p WHERE p.name = 'User_by_user_name')
+	DROP PROC dbo.User_by_user_name
+GO 
+CREATE PROC dbo.User_by_user_name @user_name VARCHAR(50)
+AS
+BEGIN	
+    SELECT * FROM dbo.adm_users AS au WHERE au.user_name = @user_name
+	-- get roles
+	SELECT aur.id FROM dbo.adm_users_roles AS aur
+		JOIN dbo.adm_users AS au ON au.id = aur.user_id
+	WHERE au.user_name = @user_name
+	UNION
+	SELECT agr.id FROM dbo.adm_groups_roles AS agr
+		JOIN dbo.adm_groups_users AS agu ON agu.id = agr.group_id
+		JOIN dbo.adm_users AS au ON au.id = agu.user_id
+	WHERE au.user_name = @user_name
+END
+GO 
 /****** Object:  StoredProcedure [dbo].[User_Get] ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[User_Get]') AND type in (N'P', N'PC'))
     DROP PROCEDURE [dbo].[User_Get]

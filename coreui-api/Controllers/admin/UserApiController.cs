@@ -14,11 +14,12 @@ using System.Web.Security;
 
 namespace CoreuiApi.Controllers
 {
+    [System.Web.Http.RoutePrefix("api/v1/users")]
     public class UserApiController : ApiController
     {
         [JwtAuthentication]
         [System.Web.Http.HttpGet]        
-        [System.Web.Http.Route("api/v1/users")]
+        [System.Web.Http.Route("")]
         public IHttpActionResult GetAll()
         {
             try
@@ -49,7 +50,7 @@ namespace CoreuiApi.Controllers
 
         [JwtAuthentication]
         [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("api/v1/users/{id:long}")]
+        [System.Web.Http.Route("{id:long}")]
         public IHttpActionResult Users(long id)
         {
             var user = new UserEditModel();
@@ -63,7 +64,7 @@ namespace CoreuiApi.Controllers
 
         [JwtAuthentication]
         [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/v1/users")]
+        [System.Web.Http.Route("")]
         public IHttpActionResult Users(UserEditModel userModel)
         {
             var user = new UserModel();
@@ -83,7 +84,7 @@ namespace CoreuiApi.Controllers
 
         [JwtAuthentication]
         [System.Web.Http.HttpPut]
-        [System.Web.Http.Route("api/v1/users/{id:long}")]
+        [System.Web.Http.Route("{id:long}")]
         public IHttpActionResult UserEdit(UserEditModel userModel)
         {
             var user = new UserModel();
@@ -103,7 +104,7 @@ namespace CoreuiApi.Controllers
 
         [JwtAuthentication]
         [System.Web.Http.HttpDelete]
-        [System.Web.Http.Route("api/v1/users/{id:long}")]
+        [System.Web.Http.Route("{id:long}")]
         public IHttpActionResult UserDelete(long id)
         {
             var user = new UserModel();
