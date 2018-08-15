@@ -7,6 +7,7 @@ using System.Web.Security;
 using System.Web.Http;
 using CoreuiApi.Security;
 using CoreuiApi.Filters;
+using System.Web.Http.Cors;
 
 namespace CoreuiApi.Controllers
 {
@@ -25,7 +26,6 @@ namespace CoreuiApi.Controllers
                 if (!ModelState.IsValid) return Ok(new { success = false, message = "Thông tin không hợp lệ" });
                 
                 var identity = PTIdentity.GetPTIdentity(model.UserName, model.Password);
-                var a = Csla.ApplicationContext.User.Identity;
                 switch (PTIdentity.Status)
                 {
                     case LoginStatus.Success:
@@ -73,7 +73,7 @@ namespace CoreuiApi.Controllers
 
         [JwtAuthentication]
         [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("")]
+        [System.Web.Http.Route("logout")]
         public IHttpActionResult LogOff()
         {
             if (Csla.ApplicationContext.User != null)

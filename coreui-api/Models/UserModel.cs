@@ -8,21 +8,13 @@ namespace CoreuiApi.Models
 {
     public class UserModel
     {
-        public long Id
-        {
-            get;
-            set;
-        }
+        public long Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Group Name.
         /// </summary>
         /// <value>The Group Name.</value>
-        public string User_name
-        {
-            get;
-            set;
-        }
+        public string User_name { get;set; }
 
         /// <summary>
         /// Gets or sets the Description.
@@ -53,6 +45,7 @@ namespace CoreuiApi.Models
             get;
             set;
         }
+        public bool Is_lock { get; set; }
 
         public List<string> Roles { get; set; }
 
@@ -65,7 +58,8 @@ namespace CoreuiApi.Models
                 Fullname = info.Fullname,
                 Tel = info.Tel,
                 User_name = info.User_name,
-                Roles = null
+                Roles = null,
+                Is_lock = info.Is_lock
             };
 
             return model;

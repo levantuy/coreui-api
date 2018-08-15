@@ -8,6 +8,8 @@ using System;
 using Csla;
 using CoreuiApi.Dto;
 using System.Collections.Generic;
+using Csla.Rules;
+using CoreuiApi.Util;
 
 namespace CoreuiApi.Lib
 {
@@ -373,6 +375,17 @@ namespace CoreuiApi.Lib
 
         public List<string> Roles { get; set; }
 
+        #endregion
+
+        #region Authoration
+        protected static void AddObjectAuthorizationRules()
+        {
+            //auth rules
+            Csla.Rules.BusinessRules.AddRule(typeof(User), new Csla.Rules.CommonRules.IsInRole(AuthorizationActions.GetObject, new List<string> { Constants.UserGets }));
+            Csla.Rules.BusinessRules.AddRule(typeof(User), new Csla.Rules.CommonRules.IsInRole(AuthorizationActions.EditObject, new List<string> { Constants.UserEdit }));
+            Csla.Rules.BusinessRules.AddRule(typeof(User), new Csla.Rules.CommonRules.IsInRole(AuthorizationActions.DeleteObject, new List<string> { Constants.UserDelete }));
+            Csla.Rules.BusinessRules.AddRule(typeof(User), new Csla.Rules.CommonRules.IsInRole(AuthorizationActions.CreateObject, new List<string> { Constants.UserCreate }));
+        }
         #endregion
 
         #region Factory Methods
