@@ -20,5 +20,6 @@ namespace CoreuiApi.Dto
         /// </summary>
         /// <returns>A list of <see cref="UserInfoDto"/>.</returns>
         List<UserDto> Fetch();
+        List<UserDto> Fetch(int pageIndex, int pageZise, ref int totalRow);
     }
 }

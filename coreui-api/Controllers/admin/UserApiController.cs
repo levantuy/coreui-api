@@ -50,6 +50,40 @@ namespace CoreuiApi.Controllers
 
         [JwtAuthentication]
         [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("filter")]
+        public IHttpActionResult GetPage([FromUri]int pageIndex, [FromUri]int pageSize)
+        {
+            try
+            {
+                var user = new UserModel();
+                var result = CoreuiApi.Lib.UserColl.GetUserColl(pageIndex, pageSize);
+                var users = new List<UserModel>();
+                foreach (var item in result)
+                {
+                    users.Add(user.Map(item));
+                }
+
+                int totalPage = users.Count();
+                return Ok(new
+                {
+                    totalSize = result.TotalRow,
+                    page = pageIndex,
+                    sizePerPage = pageSize,
+                    users = users
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new
+                {
+                    error = ex.Message,
+                    users = ""
+                });
+            }
+        }
+
+        [JwtAuthentication]
+        [System.Web.Http.HttpGet]
         [System.Web.Http.Route("{id:long}")]
         public IHttpActionResult Users(long id)
         {

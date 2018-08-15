@@ -36,6 +36,31 @@ namespace CoreuiApi.Dal
             }
         }
 
+        public List<UserDto> Fetch(int pageIndex, int pageZise, ref int totalRow)
+        {
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Connection"))
+            {
+                using (var cmd = new SqlCommand("dbo.UserColl_Page", ctx.Connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("PageIndex", pageIndex);
+                    cmd.Parameters.AddWithValue("PageSize", pageZise);
+                    var userColl = new List<UserDto>();
+                    using (var dr = new SafeDataReader(cmd.ExecuteReader()))
+                    {
+                        while (dr.Read())
+                        {
+                            userColl.Add(Fetch(dr));
+                        }
+                        // 
+                        dr.NextResult();
+                        if (dr.Read()) totalRow = dr.GetInt32("TotalRow");
+                    }
+                    return userColl;
+                }
+            }
+        }
+
         private List<UserDto> LoadCollection(IDataReader data)
         {
             var userColl = new List<UserDto>();

@@ -47,6 +47,8 @@ namespace CoreuiApi.Lib
 
         #endregion
 
+        public int TotalRow { get; set; }
+
         #region Authoration
         protected static void AddObjectAuthorizationRules()
         {
@@ -64,6 +66,11 @@ namespace CoreuiApi.Lib
         public static UserColl GetUserColl()
         {            
             return DataPortal.Fetch<UserColl>();
+        }
+
+        public static UserColl GetUserColl(int pageIndex, int pageSize)
+        {
+            return DataPortal.Fetch<UserColl>(new Criteria(pageIndex, pageSize));
         }
 
         #endregion
@@ -88,6 +95,20 @@ namespace CoreuiApi.Lib
 
         #endregion
 
+        #region Criteria
+        public class Criteria : CriteriaBase<Criteria>
+        {
+            public int PageIndex { get; set; }
+            public int PageSize { get; set; }
+            public Criteria(int pageIndex, int pageSize)
+            {
+                this.PageIndex = pageIndex;
+                this.PageSize = pageSize;
+            }
+        }
+
+        #endregion
+
         #region Data Access
 
         /// <summary>
@@ -101,6 +122,24 @@ namespace CoreuiApi.Lib
             {
                 var dal = dalManager.GetProvider<IUserCollDal>();
                 var data = dal.Fetch();
+                Fetch(data);
+            }
+            OnFetchPost(args);
+        }
+
+        /// <summary>
+        /// Loads a <see cref="UserColl"/> collection from the database.
+        /// </summary>
+        protected void DataPortal_Fetch(Criteria criteria)
+        {
+            var args = new DataPortalHookArgs();
+            OnFetchPre(args);
+            using (var dalManager = DalFactoryGetManager.GetManager())
+            {
+                var dal = dalManager.GetProvider<IUserCollDal>();
+                int total = 0;
+                var data = dal.Fetch(criteria.PageIndex, criteria.PageSize, ref total);
+                this.TotalRow = total;
                 Fetch(data);
             }
             OnFetchPost(args);
