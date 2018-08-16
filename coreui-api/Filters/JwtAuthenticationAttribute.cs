@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
@@ -57,7 +58,11 @@ namespace CoreuiApi.Filters
 
             if (string.IsNullOrEmpty(username))
                 return false;
-
+            var jwthandler = new JwtSecurityTokenHandler();
+            var jwttoken = jwthandler.ReadToken(token);
+            var expDate = jwttoken.ValidTo;
+            if (expDate < DateTime.UtcNow)
+                return false;
             // More validate to check whether username exists in system
 
             return true;

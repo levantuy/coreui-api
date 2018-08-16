@@ -47,8 +47,8 @@ namespace CoreuiApi.Controllers
                             //Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket));                            
                             var token = new TokenModel
                             {
-                                Token = JwtManager.GenerateToken(model.UserName, 60),
-                                Expiration = DateTime.Now.AddMinutes(60)
+                                Token = JwtManager.GenerateToken(model.UserName, 1),
+                                Expiration = DateTime.UtcNow.AddMinutes(1)
                             };
                             if (model.ReturnUrl.Length > 1 && model.ReturnUrl.StartsWith("/")
                                         && !model.ReturnUrl.StartsWith("//") && !model.ReturnUrl.StartsWith("/\\"))
@@ -71,11 +71,22 @@ namespace CoreuiApi.Controllers
             }
         }
 
-        [JwtAuthentication]
+        [System.Web.Http.AllowAnonymous]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("logout")]
         public IHttpActionResult LogOff()
         {
+            var re = Request;
+            var authorization = re.Headers.Authorization;
+            if (authorization != null && authorization.Scheme == "Bearer")
+            {
+                if (string.IsNullOrEmpty(authorization.Parameter))
+                {
+
+                }
+                var token = authorization.Parameter;
+            }  
+            
             if (Csla.ApplicationContext.User != null)
                 MemoryCacher.Delete(Csla.ApplicationContext.User.Identity.Name);
             FormsAuthentication.SignOut();            
