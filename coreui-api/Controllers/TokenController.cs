@@ -15,8 +15,8 @@ namespace CoreuiApi
             {
                 var token = new TokenModel
                 {
-                    Token = JwtManager.GenerateToken(username, 1),
-                    Expiration = DateTime.Now.AddMinutes(1)
+                    Token = JwtManager.GenerateToken(username, 100),
+                    Expiration = DateTime.UtcNow.AddMinutes(100)
                 };
 
                 return Ok(token);

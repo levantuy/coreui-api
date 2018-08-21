@@ -47,8 +47,8 @@ namespace CoreuiApi.Controllers
                             //Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket));                            
                             var token = new TokenModel
                             {
-                                Token = JwtManager.GenerateToken(model.UserName, 1),
-                                Expiration = DateTime.UtcNow.AddMinutes(1)
+                                Token = JwtManager.GenerateToken(model.UserName, 60),
+                                Expiration = DateTime.UtcNow.AddMinutes(60)
                             };
                             if (model.ReturnUrl.Length > 1 && model.ReturnUrl.StartsWith("/")
                                         && !model.ReturnUrl.StartsWith("//") && !model.ReturnUrl.StartsWith("/\\"))
