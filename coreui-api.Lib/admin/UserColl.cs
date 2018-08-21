@@ -68,9 +68,9 @@ namespace CoreuiApi.Lib
             return DataPortal.Fetch<UserColl>();
         }
 
-        public static UserColl GetUserColl(int pageIndex, int pageSize)
+        public static UserColl GetUserColl(int pageIndex, int pageSize, string fullname, string user_name, string tel, string email)
         {
-            return DataPortal.Fetch<UserColl>(new Criteria(pageIndex, pageSize));
+            return DataPortal.Fetch<UserColl>(new Criteria(pageIndex, pageSize, fullname, user_name, tel, email));
         }
 
         #endregion
@@ -100,10 +100,18 @@ namespace CoreuiApi.Lib
         {
             public int PageIndex { get; set; }
             public int PageSize { get; set; }
-            public Criteria(int pageIndex, int pageSize)
+            public string FullName { get; set; }
+            public string Username { get; set; }
+            public string Tel { get; set; }
+            public string Email { get; set; }
+            public Criteria(int pageIndex, int pageSize, string fullname, string user_name, string tel, string email)
             {
                 this.PageIndex = pageIndex;
                 this.PageSize = pageSize;
+                this.FullName = fullname;
+                this.Username = Username;
+                this.Tel = tel;
+                this.Email = email;
             }
         }
 
@@ -138,7 +146,7 @@ namespace CoreuiApi.Lib
             {
                 var dal = dalManager.GetProvider<IUserCollDal>();
                 int total = 0;
-                var data = dal.Fetch(criteria.PageIndex, criteria.PageSize, ref total);
+                var data = dal.Fetch(criteria.PageIndex, criteria.PageSize, criteria.FullName, criteria.Username, criteria.Tel, criteria.Email, ref total);
                 this.TotalRow = total;
                 Fetch(data);
             }

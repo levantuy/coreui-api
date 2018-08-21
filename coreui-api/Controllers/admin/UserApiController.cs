@@ -51,12 +51,13 @@ namespace CoreuiApi.Controllers
         [JwtAuthentication]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("filter")]
-        public IHttpActionResult GetPage([FromUri]int pageIndex, [FromUri]int pageSize)
+        public IHttpActionResult GetPage([FromUri]int pageIndex, [FromUri]int pageSize, [FromUri]string fullname, 
+            [FromUri]string user_name, [FromUri]string tel, [FromUri]string email)
         {
             try
             {
                 var user = new UserModel();
-                var result = CoreuiApi.Lib.UserColl.GetUserColl(pageIndex, pageSize);
+                var result = CoreuiApi.Lib.UserColl.GetUserColl(pageIndex, pageSize, fullname, user_name, tel, email);
                 var users = new List<UserModel>();
                 foreach (var item in result)
                 {

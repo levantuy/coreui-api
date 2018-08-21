@@ -36,7 +36,7 @@ namespace CoreuiApi.Dal
             }
         }
 
-        public List<UserDto> Fetch(int pageIndex, int pageZise, ref int totalRow)
+        public List<UserDto> Fetch(int pageIndex, int pageZise, string fullname, string user_name, string tel, string email, ref int totalRow)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("Connection"))
             {
@@ -45,6 +45,14 @@ namespace CoreuiApi.Dal
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("PageIndex", pageIndex);
                     cmd.Parameters.AddWithValue("PageSize", pageZise);
+                    if(!string.IsNullOrEmpty(fullname))
+                        cmd.Parameters.AddWithValue("Fullname", fullname);
+                    if (!string.IsNullOrEmpty(user_name))
+                        cmd.Parameters.AddWithValue("Username", user_name);
+                    if (!string.IsNullOrEmpty(tel))
+                        cmd.Parameters.AddWithValue("Tel", tel);
+                    if (!string.IsNullOrEmpty(email))
+                        cmd.Parameters.AddWithValue("Email", email);
                     var userColl = new List<UserDto>();
                     using (var dr = new SafeDataReader(cmd.ExecuteReader()))
                     {
