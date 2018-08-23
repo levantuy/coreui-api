@@ -35,6 +35,7 @@ namespace CoreuiApi.Lib
         public Int64 Id
         {
             get { return GetProperty(IdProperty); }
+            set { SetProperty(IdProperty, value); }
         }
 
         /// <summary>

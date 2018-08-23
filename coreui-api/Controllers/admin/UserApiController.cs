@@ -67,6 +67,7 @@ namespace CoreuiApi.Controllers
                 int totalPage = users.Count();
                 return Ok(new
                 {
+                    success = true,
                     totalSize = result.TotalRow,
                     page = pageIndex,
                     sizePerPage = pageSize,
@@ -77,8 +78,9 @@ namespace CoreuiApi.Controllers
             {
                 return Ok(new
                 {
-                    error = ex.Message,
-                    users = ""
+                    success = false,
+                    error_code = "510", // error not defined
+                    message_error = ex.Message
                 });
             }
         }
@@ -88,13 +90,26 @@ namespace CoreuiApi.Controllers
         [System.Web.Http.Route("{id:long}")]
         public IHttpActionResult Users(long id)
         {
-            var user = new UserEditModel();
-            var result = CoreuiApi.Lib.User.GetUser(id);
-            user = user.Map(result);
-            return Ok(new
+            try
             {
-                user = user
-            });
+                var user = new UserEditModel();
+                var result = CoreuiApi.Lib.User.GetUser(id);
+                user = user.Map(result);
+                return Ok(new
+                {
+                    success = true,
+                    user = user
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new
+                {
+                    success = false,
+                    error_code = "510", // error not defined
+                    message_error = ex.Message
+                });
+            }
         }
 
         [JwtAuthentication]
@@ -102,39 +117,79 @@ namespace CoreuiApi.Controllers
         [System.Web.Http.Route("")]
         public IHttpActionResult Users(UserEditModel userModel)
         {
-            var user = new UserModel();
-            var result = CoreuiApi.Lib.UserColl.GetUserColl();
-            var users = new List<UserModel>();
-            foreach (var item in result)
+            try
             {
-                users.Add(user.Map(item));
+                CoreuiApi.Lib.User user = CoreuiApi.Lib.User.NewUser();
+                user.Id = userModel.Id;
+                user.Fullname = userModel.Fullname;
+                user.User_name = userModel.User_name;
+                user.Password_question = userModel.Password_question;
+                user.Password_answer = userModel.Password_answer;
+                user.Tel = userModel.Tel;
+                user.Email = userModel.Email;
+                user.Birthday = userModel.Birthday;
+                user.Is_approved = userModel.Is_approved;
+                user.Is_lock = userModel.Is_lock;
+                var temp = user.Clone();
+                user = temp.Save();
+                return Ok(new
+                {
+                    success = true,
+                    user = user
+                });
             }
-
-            int totalPage = users.Count();
-            return Ok(new
+            catch (Exception ex)
             {
-                users = users
-            });
+                return Ok(new
+                {
+                    success = false,
+                    error_code = "510", // error not defined
+                    message_error = ex.Message
+                });
+            }
         }
 
         [JwtAuthentication]
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("{id:long}")]
-        public IHttpActionResult UserEdit(UserEditModel userModel)
+        public IHttpActionResult UserEdit([FromBody]UserEditModel userModel)
         {
-            var user = new UserModel();
-            var result = CoreuiApi.Lib.UserColl.GetUserColl();
-            var users = new List<UserModel>();
-            foreach (var item in result)
+            try
             {
-                users.Add(user.Map(item));
+                if (userModel.Id == 0)
+                    return Ok(new
+                    {
+                        success = false,
+                        error_code = "410", // error not defined
+                        message_error = "Dữ liệu không được tìm thấy"
+                    });
+                CoreuiApi.Lib.User user = CoreuiApi.Lib.User.GetUser(userModel.Id);                
+                user.Fullname = userModel.Fullname;
+                user.User_name = userModel.User_name;
+                user.Password_question = userModel.Password_question;
+                user.Password_answer = userModel.Password_answer;
+                user.Tel = userModel.Tel;
+                user.Email = userModel.Email;
+                user.Birthday = userModel.Birthday;
+                user.Is_approved = userModel.Is_approved;
+                user.Is_lock = userModel.Is_lock;
+                var temp = user.Clone();
+                user = temp.Save();
+                return Ok(new
+                {
+                    success = true,
+                    user = user
+                });
             }
-
-            int totalPage = users.Count();
-            return Ok(new
+            catch(Exception ex)
             {
-                users = users
-            });
+                return Ok(new
+                {
+                    success = false, 
+                    error_code = "510", // error not defined
+                    message_error = ex.Message
+                });
+            }
         }
 
         [JwtAuthentication]
@@ -142,19 +197,23 @@ namespace CoreuiApi.Controllers
         [System.Web.Http.Route("{id:long}")]
         public IHttpActionResult UserDelete(long id)
         {
-            var user = new UserModel();
-            var result = CoreuiApi.Lib.UserColl.GetUserColl();
-            var users = new List<UserModel>();
-            foreach (var item in result)
+            try
             {
-                users.Add(user.Map(item));
+                CoreuiApi.Lib.User.DeleteUser(id);
+                return Ok(new
+                {
+                    success = true
+                });
             }
-
-            int totalPage = users.Count();
-            return Ok(new
+            catch (Exception ex)
             {
-                users = users
-            });
+                return Ok(new
+                {
+                    success = false,
+                    error_code = "510", // error not defined
+                    message_error = ex.Message
+                });
+            }
         }
     }
 }
