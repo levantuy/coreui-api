@@ -8,6 +8,8 @@ using System.Web.Http;
 using CoreuiApi.Security;
 using CoreuiApi.Filters;
 using System.Web.Http.Cors;
+using System.IdentityModel.Tokens.Jwt;
+using Newtonsoft.Json;
 
 namespace CoreuiApi.Controllers
 {
@@ -83,12 +85,19 @@ namespace CoreuiApi.Controllers
                 if (string.IsNullOrEmpty(authorization.Parameter))
                 {
 
-                }
-                var token = authorization.Parameter;
-            }  
-            
-            if (Csla.ApplicationContext.User != null)
-                MemoryCacher.Delete(Csla.ApplicationContext.User.Identity.Name);
+                } else
+                {
+                    var token = new JwtSecurityToken(jwtEncodedString: authorization.Parameter);
+                    foreach (var item in token.Claims)
+                    {
+                        if (item.Type == "unique_name")
+                        {
+                            MemoryCacher.Delete(item.Value);
+                            break;
+                        }
+                    }
+                }                
+            }            
             FormsAuthentication.SignOut();            
             return Ok(new { success = true, message = "Đăng xuất thành công!" });
         }

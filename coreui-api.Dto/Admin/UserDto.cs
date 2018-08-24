@@ -163,7 +163,7 @@ namespace CoreuiApi.Dto
         /// Gets or sets the last_user_id.
         /// </summary>
         /// <value>The last_user_id.</value>
-        public Int64 Last_user_id { get; set; }
+        public string Last_username { get; set; }
         public List<string> Roles { get; set; }
     }
 }

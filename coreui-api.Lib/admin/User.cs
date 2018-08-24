@@ -363,15 +363,15 @@ namespace CoreuiApi.Lib
         /// <summary>
         /// Maintains metadata about <see cref="last_user_id"/> property.
         /// </summary>
-        private static readonly PropertyInfo<Int64> Last_user_idProperty = RegisterProperty<Int64>(p => p.Last_user_id, "last_user_id");
+        private static readonly PropertyInfo<string> Last_usernameProperty = RegisterProperty<string>(p => p.Last_username, "last username");
         /// <summary>
         /// Gets or sets the last_user_id.
         /// </summary>
         /// <value>The last_user_id.</value>
-        public Int64 Last_user_id
+        public string Last_username
         {
-            get { return GetProperty(Last_user_idProperty); }
-            set { SetProperty(Last_user_idProperty, value); }
+            get { return GetProperty(Last_usernameProperty); }
+            set { SetProperty(Last_usernameProperty, value); }
         }
 
         public List<string> Roles { get; set; }
@@ -504,7 +504,7 @@ namespace CoreuiApi.Lib
             LoadProperty(Is_lockProperty, data.Is_lock);
             LoadProperty(User_typeProperty, data.User_type);
             LoadProperty(Last_modifiedProperty, data.Last_modified);
-            LoadProperty(Last_user_idProperty, data.Last_user_id);
+            LoadProperty(Last_usernameProperty, data.Last_username);
             var args = new DataPortalHookArgs(data);
             OnFetchRead(args);
         }
@@ -539,7 +539,7 @@ namespace CoreuiApi.Lib
             dto.Is_lock = Is_lock;
             dto.User_type = User_type;
             dto.Last_modified = ReadProperty(Last_modifiedProperty);
-            dto.Last_user_id = Last_user_id;
+            dto.Last_username = Last_username;
             using (var dalManager = DalFactoryGetManager.GetManager())
             {
                 var args = new DataPortalHookArgs(dto);
@@ -586,7 +586,7 @@ namespace CoreuiApi.Lib
             dto.Is_lock = Is_lock;
             dto.User_type = User_type;
             dto.Last_modified = ReadProperty(Last_modifiedProperty);
-            dto.Last_user_id = Last_user_id;
+            dto.Last_username = Last_username;
             using (var dalManager = DalFactoryGetManager.GetManager())
             {
                 var args = new DataPortalHookArgs(dto);

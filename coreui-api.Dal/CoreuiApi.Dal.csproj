@@ -54,6 +54,10 @@
       <Project>{5d610414-e4db-47ec-b18b-2916ef9846a2}</Project>
       <Name>CoreuiApi.Dto</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CoreuiApi.Util\CoreuiApi.Util.csproj">
+      <Project>{4ACFB391-9000-4073-B555-7C55EFD30ECF}</Project>
+      <Name>CoreuiApi.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

@@ -221,7 +221,7 @@ namespace CoreuiApi.Lib
         /// Gets the last_user_id.
         /// </summary>
         /// <value>The last_user_id.</value>
-        public Int64 Last_user_id { get; private set; }
+        public string Last_username { get; private set; }
 
         #endregion
 
@@ -287,7 +287,7 @@ namespace CoreuiApi.Lib
             Is_lock = data.Is_lock;
             User_type = data.User_type;
             LoadProperty(Last_modifiedProperty, data.Last_modified);
-            Last_user_id = data.Last_user_id;
+            Last_username = data.Last_username;
             var args = new DataPortalHookArgs(data);
             OnFetchRead(args);
         }

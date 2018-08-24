@@ -130,12 +130,13 @@ namespace CoreuiApi.Controllers
                 user.Birthday = userModel.Birthday;
                 user.Is_approved = userModel.Is_approved;
                 user.Is_lock = userModel.Is_lock;
+                user.Last_username = Csla.ApplicationContext.User.Identity.Name;
                 var temp = user.Clone();
                 user = temp.Save();
                 return Ok(new
                 {
                     success = true,
-                    user = user
+                    user = userModel.Map(user)
                 });
             }
             catch (Exception ex)
@@ -173,12 +174,13 @@ namespace CoreuiApi.Controllers
                 user.Birthday = userModel.Birthday;
                 user.Is_approved = userModel.Is_approved;
                 user.Is_lock = userModel.Is_lock;
+                user.Last_username = Csla.ApplicationContext.User.Identity.Name;
                 var temp = user.Clone();
                 user = temp.Save();
                 return Ok(new
                 {
                     success = true,
-                    user = user
+                    user = userModel.Map(user)
                 });
             }
             catch(Exception ex)

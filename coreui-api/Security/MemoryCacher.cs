@@ -24,7 +24,9 @@ namespace CoreuiApi.Security
 
         public static bool Add(string key, object value, DateTimeOffset absExpiration)
         {            
-            MemoryCache memoryCache = MemoryCache.Default;            
+            MemoryCache memoryCache = MemoryCache.Default;
+            if (memoryCache.Contains(key))
+                memoryCache.Remove(key);
             return memoryCache.Add(key, value, absExpiration);
         }
 

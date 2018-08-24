@@ -216,7 +216,7 @@ namespace CoreuiApi.Models
         /// Gets or sets the last_user_id.
         /// </summary>
         /// <value>The last_user_id.</value>
-        public Int64 Last_user_id { get; set; }
+        public string Last_username { get; set; }
         public List<string> Roles { get; set; }
         public UserEditModel Map(User user)
         {
@@ -240,7 +240,7 @@ namespace CoreuiApi.Models
                 Last_login_date = user.Last_login_date,
                 Last_modified = user.Last_modified,
                 Last_password_changed_date = user.Last_password_changed_date,
-                Last_user_id = user.Last_user_id,
+                Last_username = user.Last_username,
                 Password = user.Password,
                 Password_answer = user.Password_answer,
                 Password_question = user.Password_question,

@@ -110,7 +110,7 @@ namespace CoreuiApi.Dal
             userInfo.Is_lock = dr.GetBoolean("is_lock");
             userInfo.User_type = (Int64?)dr.GetValue("user_type");
             userInfo.Last_modified = dr.GetSmartDate("last_modified", true);
-            userInfo.Last_user_id = dr.GetInt64("last_user_id");
+            userInfo.Last_username = dr.GetString("Last_username");
 
             return userInfo;
         }

@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
 using CoreuiApi.Dto;
+using CoreuiApi.Util;
 
 namespace CoreuiApi.Dal
 {
@@ -88,7 +89,7 @@ namespace CoreuiApi.Dal
                     user.Is_lock = dr.GetBoolean("is_lock");
                     user.User_type = (Int64?)dr.GetValue("user_type");
                     user.Last_modified = dr.GetSmartDate("last_modified", true);
-                    user.Last_user_id = dr.GetInt64("last_user_id");
+                    user.Last_username = dr.GetString("Last_username");
                 }
                 dr.NextResult();
                 while (dr.Read())
@@ -109,6 +110,8 @@ namespace CoreuiApi.Dal
         /// <returns>The new <see cref="UserDto"/>.</returns>
         public UserDto Insert(UserDto user)
         {
+            user.Password_salt = StringUtils.CreateSalt();
+            user.Password = StringUtils.Encode(user.Password, user.Password_salt);
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("Connection"))
             {
                 using (var cmd = new SqlCommand("dbo.User_Add", ctx.Connection))
@@ -123,22 +126,14 @@ namespace CoreuiApi.Dal
                     cmd.Parameters.AddWithValue("@is_approved", user.Is_approved).DbType = DbType.Boolean;
                     cmd.Parameters.AddWithValue("@fullname", user.Fullname).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@email", user.Email).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@tel", user.Tel == null ? (object)DBNull.Value : user.Tel).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@last_login_date", user.Last_login_date.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@last_password_changed_date", user.Last_password_changed_date.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@last_lockout_date", user.Last_lockout_date.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@failed_password_attempt_count", user.Failed_password_attempt_count).DbType = DbType.Int64;
-                    cmd.Parameters.AddWithValue("@failed_password_attempt_window_start", user.Failed_password_attempt_window_start.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@failed_password_answer_attempt_count", user.Failed_password_answer_attempt_count).DbType = DbType.Int64;
-                    cmd.Parameters.AddWithValue("@failed_password_answer_attempt_window_start", user.Failed_password_answer_attempt_window_start.DBValue).DbType = DbType.DateTime;
+                    cmd.Parameters.AddWithValue("@tel", user.Tel == null ? (object)DBNull.Value : user.Tel).DbType = DbType.String;                    
                     cmd.Parameters.AddWithValue("@birthday", user.Birthday.DBValue).DbType = DbType.DateTime;
                     cmd.Parameters.AddWithValue("@address", user.Address == null ? (object)DBNull.Value : user.Address).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@website", user.Website == null ? (object)DBNull.Value : user.Website).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@avatar", user.Avatar == null ? (object)DBNull.Value : user.Avatar).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@is_lock", user.Is_lock).DbType = DbType.Boolean;
-                    cmd.Parameters.AddWithValue("@user_type", user.User_type == null ? (object)DBNull.Value : user.User_type.Value).DbType = DbType.Int64;
-                    cmd.Parameters.AddWithValue("@last_modified", user.Last_modified.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@last_user_id", user.Last_user_id).DbType = DbType.Int64;
+                    cmd.Parameters.AddWithValue("@user_type", user.User_type == null ? (object)DBNull.Value : user.User_type.Value).DbType = DbType.Int64;                    
+                    cmd.Parameters.AddWithValue("@Last_username", user.Last_username).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                     user.Id = (long)cmd.Parameters["@id"].Value;
                 }
@@ -167,22 +162,14 @@ namespace CoreuiApi.Dal
                     cmd.Parameters.AddWithValue("@is_approved", user.Is_approved).DbType = DbType.Boolean;
                     cmd.Parameters.AddWithValue("@fullname", user.Fullname).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@email", user.Email).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@tel", user.Tel == null ? (object)DBNull.Value : user.Tel).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@last_login_date", user.Last_login_date.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@last_password_changed_date", user.Last_password_changed_date.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@last_lockout_date", user.Last_lockout_date.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@failed_password_attempt_count", user.Failed_password_attempt_count).DbType = DbType.Int64;
-                    cmd.Parameters.AddWithValue("@failed_password_attempt_window_start", user.Failed_password_attempt_window_start.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@failed_password_answer_attempt_count", user.Failed_password_answer_attempt_count).DbType = DbType.Int64;
-                    cmd.Parameters.AddWithValue("@failed_password_answer_attempt_window_start", user.Failed_password_answer_attempt_window_start.DBValue).DbType = DbType.DateTime;
+                    cmd.Parameters.AddWithValue("@tel", user.Tel == null ? (object)DBNull.Value : user.Tel).DbType = DbType.String;                    
                     cmd.Parameters.AddWithValue("@birthday", user.Birthday.DBValue).DbType = DbType.DateTime;
                     cmd.Parameters.AddWithValue("@address", user.Address == null ? (object)DBNull.Value : user.Address).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@website", user.Website == null ? (object)DBNull.Value : user.Website).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@avatar", user.Avatar == null ? (object)DBNull.Value : user.Avatar).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@is_lock", user.Is_lock).DbType = DbType.Boolean;
                     cmd.Parameters.AddWithValue("@user_type", user.User_type == null ? (object)DBNull.Value : user.User_type.Value).DbType = DbType.Int64;
-                    cmd.Parameters.AddWithValue("@last_modified", user.Last_modified.DBValue).DbType = DbType.DateTime;
-                    cmd.Parameters.AddWithValue("@last_user_id", user.Last_user_id).DbType = DbType.Int64;
+                    cmd.Parameters.AddWithValue("@Last_username", user.Last_username).DbType = DbType.String;
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("User");
