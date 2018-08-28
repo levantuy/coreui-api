@@ -109,7 +109,7 @@ namespace CoreuiApi.Lib
                 this.PageIndex = pageIndex;
                 this.PageSize = pageSize;
                 this.FullName = fullname;
-                this.Username = Username;
+                this.Username = user_name;
                 this.Tel = tel;
                 this.Email = email;
             }

@@ -25,7 +25,7 @@ namespace CoreuiApi.Controllers
         {
             try
             {
-                if (!ModelState.IsValid) return Ok(new { success = false, message = "Thông tin không hợp lệ" });
+                if (!ModelState.IsValid) return Ok(new { success = false, token = new TokenModel { }, message = "Thông tin không hợp lệ" });
                 
                 var identity = PTIdentity.GetPTIdentity(model.UserName, model.Password);
                 switch (PTIdentity.Status)
@@ -54,22 +54,24 @@ namespace CoreuiApi.Controllers
                             };
                             if (model.ReturnUrl.Length > 1 && model.ReturnUrl.StartsWith("/")
                                         && !model.ReturnUrl.StartsWith("//") && !model.ReturnUrl.StartsWith("/\\"))
-                                return Json(new { success = true, url = model.ReturnUrl, token = token });
+                                return Json(new { success = true, token = token, message = "" });
                             else
-                                return Json(new { success = true, url = string.Empty, token = token });
+                                return Json(new { success = true, token = token, message = "" });
                         }
+                    case LoginStatus.IsNotApproved:
+                        return Json(new { success = false, token = new TokenModel { }, message = "Tài khoản chưa được xác nhận." });
                     case LoginStatus.LockedOut:
-                        return Json(new { success = false, messageError = "Tài khoản đã bị khóa." });
+                        return Json(new { success = false, token = new TokenModel { }, message = "Tài khoản đã bị khóa." });
                     case LoginStatus.RequiresVerification:
-                        return Json(new { success = false, messageError = "Tài khoản chưa kích hoạt tài khoản." });
+                        return Json(new { success = false, token = new TokenModel { }, message = "Tài khoản chưa kích hoạt tài khoản." });
                     case LoginStatus.Failure:
                     default:
-                        return Json(new { success = false, messageError = "Tên đăng nhập hoặc mật khẩu không đúng." });
+                        return Json(new { success = false, token = new TokenModel { }, message = "Tên đăng nhập hoặc mật khẩu không đúng." });
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, error = ex.Message });
+                return Json(new { success = false, token = new TokenModel { }, message = ex.Message });
             }
         }
 
